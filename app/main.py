@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Hashable, Iterator
+from typing import Hashable, Iterator, Any
 
 
 class Dictionary:
@@ -9,7 +9,7 @@ class Dictionary:
         self.increase_factor = 0.66
         self.size = 0
 
-    def __setitem__(self, key: Hashable, value: any) -> None:
+    def __setitem__(self, key: Hashable, value: Any) -> None:
         hash_idx = self.get_indexes(key)
         for idx, (element, _) in enumerate(self.table[hash_idx]):
             if element == key:
@@ -23,21 +23,21 @@ class Dictionary:
         self.table[hash_idx].append((key, value))
         self.size += 1
 
-    def __getitem__(self, key: Hashable) -> any:
+    def __getitem__(self, key: Hashable) -> Any:
         hash_idx = self.get_indexes(key)
         for element, value in self.table[hash_idx]:
             if element == key:
                 return value
         raise KeyError
 
-    def get(self, key: Hashable) -> any:
+    def get(self, key: Hashable) -> Any:
         hash_idx = self.get_indexes(key)
         for element, value in self.table[hash_idx]:
             if element == key:
                 return value
         return None
 
-    def pop(self, key: Hashable) -> any:
+    def pop(self, key: Hashable) -> Any:
         value = self.get(key)
         if value is not None:
             self.__delitem__(key)
