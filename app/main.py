@@ -10,8 +10,7 @@ class Dictionary:
         self.size = 0
 
     def __setitem__(self, key: Hashable, value: any) -> None:
-        hash_of_key = hash(key)
-        hash_idx = hash_of_key % self.capacity
+        hash_idx = self.get_indexes(key)
         for idx, (element, _) in enumerate(self.table[hash_idx]):
             if element == key:
                 self.table[hash_idx][idx] = (key, value)
@@ -25,16 +24,14 @@ class Dictionary:
         self.size += 1
 
     def __getitem__(self, key: Hashable) -> any:
-        hash_of_key = hash(key)
-        hash_idx = hash_of_key % self.capacity
+        hash_idx = self.get_indexes(key)
         for element, value in self.table[hash_idx]:
             if element == key:
                 return value
         raise KeyError
 
     def get(self, key: Hashable) -> any:
-        hash_value = hash(key)
-        hash_idx = hash_value % self.capacity
+        hash_idx = self.get_indexes(key)
         for element, value in self.table[hash_idx]:
             if element == key:
                 return value
@@ -52,8 +49,7 @@ class Dictionary:
                 yield key
 
     def __delitem__(self, key: Hashable) -> None:
-        hash_of_key = hash(key)
-        hash_idx = hash_of_key % self.capacity
+        hash_idx = self.get_indexes(key)
         for idx, (element, value) in enumerate(self.table[hash_idx]):
             if element == key:
                 del self.table[hash_idx][idx]
@@ -76,3 +72,6 @@ class Dictionary:
 
     def __len__(self) -> int:
         return self.size
+
+    def get_indexes(self, key: Hashable) -> int:
+        return hash(key) % self.capacity
